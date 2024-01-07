@@ -19,13 +19,13 @@ class Route
     public static function get($path, $callback)
     {
         $path = strtolower(rtrim('/MVC'.$path,'/'));
-        Route::$routes['get'][$path] = $callback;
+        self::$routes['get'][$path] = $callback;
     }
 //    === POST ===
-    public static function post($path, $callback): void
+    public static function post($path, $callback)
     {
         $path = strtolower($path);
-        Route::$routes['post'][$path] = $callback;
+        self::$routes['post'][$path] = $callback;
     }
 
 //    === Run ====
@@ -33,20 +33,37 @@ class Route
     {
         $path = strtolower(Request::getPath());
         $method = Request::getMethod();
-        $callback = Route::$routes[$method][$path] ?? false;
+        $callback = self::$routes[$method][$path] ?? false;
         if ($callback === false) {
             echo "NOT FOUND";
             exit;
         }
         if (is_string($callback)) {
-            return Route::render($callback);
+            echo self::render($callback);
+            exit;
         }
-        return call_user_func($callback);
+        echo call_user_func($callback);
     }
 
     public static function render($view)
     {
-        include_once __DIR__."/../views/client/$view.php";
+        $layoutContent = self::layoutContent();
+        $viewContent = self::renderOnlyView($view);
+        return str_replace("{{content}}", $viewContent, $layoutContent);
+    }
+
+    protected static function layoutContent()
+    {
+        ob_start();
+        include_once __DIR__."/../views/layouts/client/main.php";
+        return ob_get_clean();
+    }
+
+    protected static function renderOnlyView($view)
+    {
+        ob_start();
+        include_once __DIR__."/../views/$view.php";
+        return ob_get_clean();
     }
 
 }

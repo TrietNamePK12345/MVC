@@ -4,19 +4,19 @@
 //
 //class Application
 //{
-//    public static string $ROOT_DIR;
-//    public Route $router;
-//    public Request $request;
-//    public Response $response;
-//    public static Application $app;
-//    public function __construct($rootPath)
+//    static string $ROOT_DIR;
+//    Route $router;
+//    Request $request;
+//    Response $response;
+//    static Application $app;
+//    assets function __construct($rootPath)
 //    {
 //        self::$ROOT_DIR = $rootPath;
 //        self::$app = $this;
 //        $this->request = new Request();
 //    }
 //
-//    public function run(): void
+//    assets function run()
 //    {
 //        echo $this->router->resolve();
 //    }
